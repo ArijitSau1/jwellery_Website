@@ -3,22 +3,26 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    getUsers,
-    getProfile,
-    updateProfile
+  getProfile,
+  updateProfile
 } = require("../controllers/userController");
 
 const authMiddleware =
-    require("../middleware/authMiddleware");
-
-router.get("/", getUsers);
+  require("../middleware/authMiddleware");
 
 router.get(
-    "/profile",
-    authMiddleware,
-    getProfile
+  "/profile",
+  authMiddleware,
+  getProfile
 );
 
+router.put(
+  "/profile",
+  authMiddleware,
+  updateProfile
+);
+
+module.exports = router;
 
 router.put(
   "/profile",

@@ -22,7 +22,6 @@ router.put(
   updateProfile
 );
 
-module.exports = router;
 
 router.put(
   "/profile",

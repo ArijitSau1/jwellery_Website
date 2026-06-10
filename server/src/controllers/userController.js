@@ -63,8 +63,56 @@ const getProfile = async (req, res) => {
 
 };
 
+
+const updateProfile = async (req, res) => {
+  try {
+
+    const {
+      full_name,
+      phone,
+      dob
+    } = req.body;
+
+    const userRepository =
+      AppDataSource.getRepository("User");
+
+    const user =
+      await userRepository.findOneBy({
+        id: req.user.id
+      });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.full_name = full_name;
+    user.phone = phone;
+    user.dob = dob;
+
+    await userRepository.save(user);
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: user
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+};
+
 module.exports = {
     getUsers,
-    getProfile
+    getProfile,
+    updateProfile
 };
 

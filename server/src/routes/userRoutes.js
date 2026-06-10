@@ -4,7 +4,8 @@ const router = express.Router();
 
 const {
     getUsers,
-    getProfile
+    getProfile,
+    updateProfile
 } = require("../controllers/userController");
 
 const authMiddleware =
@@ -16,6 +17,13 @@ router.get(
     "/profile",
     authMiddleware,
     getProfile
+);
+
+
+router.put(
+  "/profile",
+  authMiddleware,
+  updateProfile
 );
 
 module.exports = router;

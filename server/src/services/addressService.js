@@ -41,6 +41,39 @@ const getAddresses = async (
 };
 
 
+const updateAddress = async (
+  userId,
+  addressId,
+  addressData
+) => {
+
+  const addressRepository = 
+       AppDataSource.getRepository(
+        "Address"
+       );
+
+
+  const address = await addressRepository.findOneBy({
+    id:parseInt(addressId),
+    user_id: userId
+  });
+
+  if(!address){
+    throw new Error(
+      "Address not found"
+    );
+  }
+
+  Object.assign(
+    address,
+    addressData
+  );
+
+  return await addressRepository.save(
+    address
+  );
+
+};
 
 
 
@@ -48,5 +81,6 @@ const getAddresses = async (
 
 module.exports = {
   createAddress,
-  getAddresses
+  getAddresses,
+  updateAddress
 };

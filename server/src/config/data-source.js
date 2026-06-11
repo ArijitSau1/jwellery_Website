@@ -17,7 +17,9 @@ const AppDataSource = new DataSource({
 
   logging: false,
 
-  entities: [require("../entities/User")],
+  entities: [require("../entities/User"),
+             require("../entities/address")
+  ],
 });
 
 module.exports = AppDataSource;

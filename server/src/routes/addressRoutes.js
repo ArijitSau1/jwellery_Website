@@ -11,10 +11,12 @@ const {
 
 const authMiddleware =
 require("../middleware/authMiddleware");
+const { validateAddress } = require("../middleware/validationMiddleware");
 
 router.post(
     "/",
     authMiddleware,
+    validateAddress,
     createAddress
 );
 

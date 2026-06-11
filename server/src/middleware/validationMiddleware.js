@@ -25,6 +25,10 @@ const validateRegister = (
   next();
 };
 
+
+
+
+
 module.exports = {
   validateRegister
 };

@@ -12,6 +12,11 @@ module.exports = new EntitySchema({
     
         },
 
+         user_id: {
+         type: "int",
+        },
+
+
         full_name: {
             type: "varchar",
         },

@@ -1,21 +1,27 @@
-const express = require ("express");
+const express = require("express");
 
 const router = express.Router();
 
 const {
-    createAddress
-} = require (
+    createAddress,
+    getAddresses
+} = require(
     "../controllers/addressController"
 );
 
-
-const authMiddleware = require ("../middleware/authMiddleware");
-
+const authMiddleware =
+require("../middleware/authMiddleware");
 
 router.post(
     "/",
     authMiddleware,
     createAddress
+);
+
+router.get(
+    "/",
+    authMiddleware,
+    getAddresses
 );
 
 module.exports = router;

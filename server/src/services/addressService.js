@@ -44,6 +44,9 @@ const getAddresses = async (
 
 
 
+
+
 module.exports = {
-  createAddress
+  createAddress,
+  getAddresses
 };

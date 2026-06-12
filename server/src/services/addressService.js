@@ -76,11 +76,44 @@ const updateAddress = async (
 };
 
 
+const deleteAddress = async (
+  userId,
+  addressId
+) => {
+
+ const addressRepository = 
+     AppDataSource.getRepository(
+      "Address"
+     );
+
+
+     const address = 
+       await addressRepository.findOneBy({
+        id:parseInt(addressId),
+        user_id: userId
+       });
+
+
+       if(!address){
+        throw new Error(
+          "Address not found"
+        );
+       }
+
+
+       await addressRepository.remove(
+        address
+       );
+       return true;
+
+};
+
 
 
 
 module.exports = {
   createAddress,
   getAddresses,
-  updateAddress
+  updateAddress,
+  deleteAddress
 };

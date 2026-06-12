@@ -82,8 +82,36 @@ try{
 
 
 
+const deleteAddress = async (
+    req,res
+) => {
+
+  try{
+    await addressService.deleteAddress(
+        req.user.id,
+        req.params.id
+    );
+
+    res.status(200).json({
+        success:true,
+        message:"Address delete succesfully"
+    });
+
+
+  } catch(error){
+    res.status(500).json({
+        success:false,
+        message: error.message
+    });
+  }
+
+};
+
+
+
 module.exports = {
     createAddress,
     getAddresses,
-    updateAddress
+    updateAddress,
+    deleteAddress
 };

@@ -11,7 +11,8 @@ const {
 require("../controllers/authController");
 
 const {
-  validateRegister
+  validateRegister,
+  validateLogin
 } =
 require("../middleware/validationMiddleware");
 
@@ -23,6 +24,7 @@ router.post(
 
 router.post(
   "/login",
+  validateLogin,
   login
 );
 

@@ -141,7 +141,9 @@ const validateLogin = (
 
 
 const validateAddress = (
-  req,res,next
+  req,
+  res,
+  next
 ) => {
 
   const {
@@ -153,24 +155,76 @@ const validateAddress = (
     pincode
   } = req.body;
 
+  const errors = [];
 
-  if(
-    !full_name ||
-    !phone ||
-    !city ||
-    !state ||
-    !pincode
+  
+  if (!full_name) {
+    errors.push(
+      "Full name is required"
+    );
+  } else if (
+    !/^[A-Za-z ]+$/.test(full_name)
   ) {
+    errors.push(
+      "Full name should contain only letters"
+    );
+  }
 
-     return res.status(400).json({
-      success:false,
-      message:"All fields are required"
-     });
+  
+  if (!phone) {
+    errors.push(
+      "Phone number is required"
+    );
+  } else if (
+    !/^[0-9]{10}$/.test(phone)
+  ) {
+    errors.push(
+      "Phone number must be 10 digits"
+    );
+  }
 
+  
+  if (!address) {
+    errors.push(
+      "Address is required"
+    );
+  }
+
+  
+  if (!city) {
+    errors.push(
+      "City is required"
+    );
+  }
+
+ 
+  if (!state) {
+    errors.push(
+      "State is required"
+    );
+  }
+
+  
+  if (!pincode) {
+    errors.push(
+      "Pincode is required"
+    );
+  } else if (
+    !/^[0-9]{6}$/.test(pincode)
+  ) {
+    errors.push(
+      "Pincode must be 6 digits"
+    );
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      errors
+    });
   }
 
   next();
-
 };
 
 

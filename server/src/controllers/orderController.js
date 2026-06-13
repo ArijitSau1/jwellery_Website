@@ -51,11 +51,17 @@ const getOrders = async (
     const status =
       req.query.status || "";
 
+    const days =
+      parseInt(
+        req.query.days
+      ) || 0;
+
     const orders =
       await orderService.getOrders(
         req.user.id,
         search,
-        status
+        status,
+        days
       );
 
     res.status(200).json({

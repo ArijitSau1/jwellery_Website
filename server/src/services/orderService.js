@@ -1,5 +1,5 @@
 const { search } = require("../app");
-const { Like } = require("typeorm");
+const { Like, MoreThanOrEqual } = require("typeorm");
 const AppDataSource = require("../config/data-source");
 
 
@@ -29,7 +29,8 @@ const createOrder = async (
 const getOrders = async (
   userId,
   search = "",
-  status = ""
+  status = "",
+  days = 0
 ) => {
 
   const orderRepository =
@@ -38,18 +39,42 @@ const getOrders = async (
     );
 
   const where = {
-    user_id: userId,
-    product_name: Like(
-      `%${search}%`
-    )
+    user_id: userId
   };
+
+  if (search) {
+    where.product_name = Like(
+      `%${search}%`
+    );
+  }
 
   if (status) {
     where.status = status;
   }
 
+  if (days > 0) {
+
+    const fromDate =
+      new Date();
+
+    fromDate.setDate(
+      fromDate.getDate() - days
+    );
+
+    where.order_date =
+      MoreThanOrEqual(
+        fromDate
+          .toISOString()
+          .split("T")[0]
+      );
+
+  }
+
   return await orderRepository.find({
-    where
+    where,
+    order: {
+      order_date: "DESC"
+    }
   });
 
 };

@@ -80,8 +80,42 @@ const getOrderById = async (
   return order;
 };
 
+
+
+const updateOrderStatus = async (
+  userId,
+  orderId,
+  status
+) => {
+
+  const orderRepository =
+    AppDataSource.getRepository(
+      "Order"
+    );
+
+  const order =
+    await orderRepository.findOneBy({
+      id: parseInt(orderId),
+      user_id: userId
+    });
+
+  if (!order) {
+    throw new Error(
+      "Order not found"
+    );
+  }
+
+  order.status = status;
+
+  return await orderRepository.save(
+    order
+  );
+};
+
+
 module.exports = {
   getOrders,
   getOrderById,
-  createOrder
+  createOrder,
+ updateOrderStatus
 };

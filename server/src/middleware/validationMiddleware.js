@@ -229,9 +229,55 @@ const validateAddress = (
 
 
 
+const validateOrderStatus = (
+  req,
+  res,
+  next
+) => {
+
+  const { status } = req.body;
+
+  const errors = [];
+
+  const validStatuses = [
+    "PENDING",
+    "ON_THE_WAY",
+    "DELIVERED",
+    "CANCELLED"
+  ];
+
+  if (!status) {
+    errors.push(
+      "Status is required"
+    );
+  }
+
+  if (
+    status &&
+    !validStatuses.includes(status)
+  ) {
+    errors.push(
+      "Invalid order status"
+    );
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      errors
+    });
+  }
+
+  next();
+
+};
+
+
+
 
 module.exports = {
   validateRegister,
   validateLogin,
-  validateAddress
+  validateAddress,
+  validateOrderStatus
 };

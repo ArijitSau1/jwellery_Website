@@ -7,10 +7,18 @@ express.Router();
 const {
   createOrder,
   getOrders,
-  getOrderById
+  getOrderById,
+  updateOrderStatus
 } = require(
   "../controllers/orderController"
 );
+
+const {
+  validateOrderStatus
+} = require(
+  "../middleware/validationMiddleware"
+);
+
 
 const authMiddleware =
 require("../middleware/authMiddleware");
@@ -32,5 +40,13 @@ router.get(
   authMiddleware,
   getOrderById
 );
+
+router.patch(
+  "/:id/status",
+  authMiddleware,
+  validateOrderStatus,
+  updateOrderStatus
+);
+
 
 module.exports = router;

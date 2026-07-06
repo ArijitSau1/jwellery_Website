@@ -2,14 +2,48 @@ const AppDataSource = require("../config/data-source");
 
 const createReturn = async (returnData) => {
 
+  const orderRepository =
+    AppDataSource.getRepository("Order");
+
   const returnRepository =
     AppDataSource.getRepository("Return");
 
+  
+  const order = await orderRepository.findOneBy({
+    id: returnData.order_id
+  });
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  
+  if (order.user_id !== returnData.user_id) {
+    throw new Error(
+      "You are not allowed to return this order"
+    );
+  }
+
+  
+  if (order.status !== "DELIVERED") {
+    throw new Error(
+      "Only delivered orders can be returned"
+    );
+  }
+
   const newReturn =
-    returnRepository.create(returnData);
+    returnRepository.create({
+      user_id: returnData.user_id,
+      order_id: returnData.order_id,
+      type: returnData.type,
+      reason: returnData.reason,
+      comment: returnData.comment,
+      product_image: returnData.product_image
+    });
 
-  return await returnRepository.save(newReturn);
-
+  return await returnRepository.save(
+    newReturn
+  );
 };
 
 const getReturns = async () => {
@@ -57,9 +91,69 @@ const updateReturnStatus = async (
 
 };
 
+
+const updatePickupAddress = async (
+  returnId,
+  addressId,
+  userId
+) => {
+
+  const returnRepository =
+    AppDataSource.getRepository("Return");
+
+  const addressRepository =
+    AppDataSource.getRepository("Address");
+
+  const returnRequest =
+  await returnRepository.findOneBy({
+    id: returnId
+  });
+
+if (!returnRequest) {
+  throw new Error("Return request not found");
+}
+
+
+if (returnRequest.user_id !== userId) {
+  throw new Error(
+    "You are not allowed to update this return request"
+  );
+}
+
+
+if (returnRequest.status !== "APPROVED") {
+  throw new Error(
+    "Pickup address can only be selected for approved return requests"
+  );
+}
+
+  const address =
+    await addressRepository.findOneBy({
+      id: addressId,
+      user_id: userId
+    });
+
+  if (!address) {
+    throw new Error(
+      "Address not found"
+    );
+  }
+
+  returnRequest.pickup_address_id =
+    addressId;
+
+  return await returnRepository.save(
+    returnRequest
+  );
+
+};
+
+
+
 module.exports = {
   createReturn,
   getReturns,
   getReturnById,
-  updateReturnStatus
+  updateReturnStatus,
+  updatePickupAddress
 };

@@ -51,6 +51,11 @@ module.exports = new EntitySchema({
       default: "PENDING"
     },
 
+    pickup_address_id: {
+    type: "int",
+    nullable: true
+},
+
     created_at: {
       type: "timestamp",
       createDate: true

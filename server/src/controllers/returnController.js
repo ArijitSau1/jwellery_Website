@@ -27,12 +27,12 @@ const createReturn = async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+  res.status(400).json({
+    success: false,
+    message: error.message
+  });
 
-  }
+}
 };
 
 const getReturns = async (req, res) => {
@@ -48,12 +48,12 @@ const getReturns = async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+  res.status(400).json({
+    success: false,
+    message: error.message
+  });
 
-  }
+}
 };
 
 const getReturnById = async (req, res) => {
@@ -78,12 +78,12 @@ const getReturnById = async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+  res.status(400).json({
+    success: false,
+    message: error.message
+  });
 
-  }
+}
 };
 
 const updateReturnStatus = async (req, res) => {
@@ -106,17 +106,56 @@ const updateReturnStatus = async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
+  res.status(400).json({
+    success: false,
+    message: error.message
+  });
+
+}
+};
+
+
+const updatePickupAddress = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const data =
+      await returnService.updatePickupAddress(
+
+        parseInt(req.params.id),
+
+        req.body.pickup_address_id,
+
+        req.user.id
+
+      );
+
+    res.status(200).json({
+      success: true,
+      message: "Pickup address updated successfully",
+      data
+    });
+
+  } catch (error) {
+
+    res.status(400).json({
       success: false,
       message: error.message
     });
 
   }
+
 };
+
+
 
 module.exports = {
   createReturn,
   getReturns,
   getReturnById,
-  updateReturnStatus
+  updateReturnStatus,
+  updatePickupAddress
 };

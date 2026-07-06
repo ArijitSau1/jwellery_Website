@@ -19,4 +19,6 @@ app.use("/api/addresses",addressRoutes);
 
 app.use("/api/orders",orderRoutes);
 
+app.use("/api/returns", require("./routes/returnRoutes"));
+
 module.exports = app;

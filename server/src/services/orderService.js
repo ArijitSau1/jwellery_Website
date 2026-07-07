@@ -66,7 +66,7 @@ const getOrders = async (
         fromDate
           .toISOString()
           .split("T")[0]
-      );
+      );   
 
   }
 

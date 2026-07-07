@@ -152,10 +152,53 @@ const updatePickupAddress = async (
 
 
 
+const confirmReturn =
+async (req,res)=>{
+
+try{
+
+const data=
+await returnService.confirmReturn(
+
+parseInt(req.params.id),
+
+req.user.id
+
+);
+
+res.status(200).json({
+
+success:true,
+
+message:
+"Return confirmed successfully",
+
+data
+
+});
+
+}
+
+catch(error){
+
+res.status(400).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+};
+
+
 module.exports = {
   createReturn,
   getReturns,
   getReturnById,
   updateReturnStatus,
-  updatePickupAddress
+  updatePickupAddress,
+  confirmReturn
 };

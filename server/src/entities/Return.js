@@ -51,6 +51,19 @@ module.exports = new EntitySchema({
       default: "PENDING"
     },
 
+    workflow_status: {
+  type: "enum",
+  enum: [
+    "REQUESTED",
+    "PICKUP_PENDING",
+    "PICKUP_COMPLETED",
+    "REFUND_PROCESSING",
+    "REFUND_COMPLETED",
+    "CANCELLED"
+  ],
+  default: "REQUESTED"
+},
+
     pickup_address_id: {
     type: "int",
     nullable: true

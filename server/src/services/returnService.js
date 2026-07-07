@@ -150,10 +150,101 @@ if (returnRequest.status !== "APPROVED") {
 
 
 
+const confirmReturn = async (
+  returnId,
+  userId
+) => {
+
+  const returnRepository =
+    AppDataSource.getRepository("Return");
+
+  const refundRepository =
+    AppDataSource.getRepository("Refund");
+
+  const returnRequest =
+    await returnRepository.findOneBy({
+      id: returnId
+    });
+
+  if (!returnRequest) {
+    throw new Error(
+      "Return request not found"
+    );
+  }
+
+  
+  if (
+    returnRequest.user_id !== userId
+  ) {
+    throw new Error(
+      "You are not allowed"
+    );
+  }
+
+  
+  if (
+    returnRequest.status !==
+    "APPROVED"
+  ) {
+    throw new Error(
+      "Return request is not approved"
+    );
+  }
+
+ 
+  if (
+    !returnRequest.pickup_address_id
+  ) {
+    throw new Error(
+      "Please select pickup address first"
+    );
+  }
+
+  
+  const refund =
+    await refundRepository.findOneBy({
+
+      return_id:
+      returnRequest.id
+
+    });
+
+  if (!refund) {
+
+    throw new Error(
+      "Please submit refund details first"
+    );
+
+  }
+
+  
+  if (
+    returnRequest.workflow_status !==
+    "REQUESTED"
+  ) {
+
+    throw new Error(
+      "Return already confirmed"
+    );
+
+  }
+
+  returnRequest.workflow_status =
+    "PICKUP_PENDING";
+
+  return await returnRepository.save(
+    returnRequest
+  );
+
+};
+
+
+
 module.exports = {
   createReturn,
   getReturns,
   getReturnById,
   updateReturnStatus,
-  updatePickupAddress
+  updatePickupAddress,
+  confirmReturn
 };

@@ -194,11 +194,97 @@ message:error.message
 };
 
 
+
+const getReturnStatus =
+async (req,res)=>{
+
+try{
+
+const data=
+await returnService.getReturnStatus(
+
+parseInt(req.params.id),
+
+req.user.id
+
+);
+
+res.status(200).json({
+
+success:true,
+
+data
+
+});
+
+}
+
+catch(error){
+
+res.status(400).json({
+
+success:false,
+
+message:error.message
+
+});
+
+}
+
+};
+
+
+const cancelReturn = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const data =
+      await returnService.cancelReturn(
+
+        parseInt(req.params.id),
+
+        req.user.id
+
+      );
+
+    res.status(200).json({
+
+      success: true,
+
+      message:
+        "Return cancelled successfully",
+
+      data
+
+    });
+
+  } catch (error) {
+
+    res.status(400).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
+
+};
+
+
+
+
 module.exports = {
   createReturn,
   getReturns,
   getReturnById,
   updateReturnStatus,
   updatePickupAddress,
-  confirmReturn
+  confirmReturn,
+  getReturnStatus,
+  cancelReturn
 };

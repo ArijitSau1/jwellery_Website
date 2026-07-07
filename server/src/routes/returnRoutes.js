@@ -6,7 +6,9 @@ const {
   getReturnById,
   updateReturnStatus,
   updatePickupAddress,
-  confirmReturn
+  confirmReturn,
+  getReturnStatus,
+  cancelReturn
 } = require("../controllers/returnController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -50,5 +52,22 @@ authMiddleware,
 confirmReturn
 
 );
+
+
+router.get(
+"/:id/status",
+authMiddleware,
+getReturnStatus
+);
+
+
+router.patch(
+  "/:id/cancel",
+  authMiddleware,
+  cancelReturn
+
+);
+
+
 
 module.exports = router;

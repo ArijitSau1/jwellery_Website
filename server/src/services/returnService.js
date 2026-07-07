@@ -240,11 +240,159 @@ const confirmReturn = async (
 
 
 
+const getReturnStatus = async (
+  returnId,
+  userId
+) => {
+
+  const returnRepository =
+    AppDataSource.getRepository("Return");
+
+  const refundRepository =
+    AppDataSource.getRepository("Refund");
+
+  const addressRepository =
+    AppDataSource.getRepository("Address");
+
+  const returnRequest =
+    await returnRepository.findOneBy({
+      id: returnId
+    });
+
+  if (!returnRequest) {
+    throw new Error(
+      "Return request not found"
+    );
+  }
+
+  if (
+    returnRequest.user_id !== userId
+  ) {
+    throw new Error(
+      "You are not allowed"
+    );
+  }
+
+  let pickupAddress = null;
+
+  if (returnRequest.pickup_address_id) {
+
+    pickupAddress =
+      await addressRepository.findOneBy({
+
+        id:
+        returnRequest.pickup_address_id
+
+      });
+
+  }
+
+  const refund =
+    await refundRepository.findOneBy({
+
+      return_id: returnId
+
+    });
+
+  return {
+
+    return_id: returnRequest.id,
+
+    status: returnRequest.status,
+
+    workflow_status:
+      returnRequest.workflow_status,
+
+    pickup_address:
+      pickupAddress,
+
+    refund
+
+  };
+
+};
+
+
+
+const cancelReturn = async (
+  returnId,
+  userId
+) => {
+
+  const returnRepository =
+    AppDataSource.getRepository("Return");
+
+  const returnRequest =
+    await returnRepository.findOneBy({
+      id: returnId
+    });
+
+
+  if (!returnRequest) {
+    throw new Error(
+      "Return request not found"
+    );
+  }
+
+
+  if (returnRequest.user_id !== userId) {
+    throw new Error(
+      "You are not allowed to cancel this return"
+    );
+  }
+
+  
+  if (
+    returnRequest.workflow_status ===
+    "CANCELLED"
+  ) {
+    throw new Error(
+      "Return request is already cancelled"
+    );
+  }
+
+  
+  if (
+    returnRequest.workflow_status ===
+    "PICKUP_COMPLETED"
+  ) {
+    throw new Error(
+      "Pickup already completed. Return cannot be cancelled."
+    );
+  }
+
+  
+  if (
+    returnRequest.workflow_status ===
+      "REFUND_PROCESSING" ||
+
+    returnRequest.workflow_status ===
+      "REFUND_COMPLETED"
+  ) {
+    throw new Error(
+      "Refund has already started. Return cannot be cancelled."
+    );
+  }
+
+  returnRequest.workflow_status =
+    "CANCELLED";
+
+  return await returnRepository.save(
+    returnRequest
+  );
+
+};
+
+
+
+
 module.exports = {
   createReturn,
   getReturns,
   getReturnById,
   updateReturnStatus,
   updatePickupAddress,
-  confirmReturn
+  confirmReturn,
+  getReturnStatus,
+  cancelReturn
 };

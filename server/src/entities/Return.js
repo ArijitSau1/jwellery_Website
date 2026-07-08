@@ -56,6 +56,7 @@ module.exports = new EntitySchema({
   enum: [
     "REQUESTED",
     "PICKUP_PENDING",
+    "PICKUP_SCHEDULED",
     "PICKUP_COMPLETED",
     "REFUND_PROCESSING",
     "REFUND_COMPLETED",

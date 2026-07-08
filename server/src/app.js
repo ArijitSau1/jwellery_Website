@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const addressRoutes = require("./routes/addressRoutes");
 const orderRoutes =  require("./routes/orderRoutes");
 const refundRoutes =  require("./routes/refundRoutes");
+const adminReturnRoutes =  require("./routes/adminReturnRoutes");
 
 
 const app = express();
@@ -23,5 +24,9 @@ app.use("/api/orders",orderRoutes);
 app.use("/api/returns", require("./routes/returnRoutes"));
 
 app.use("/api/refunds",refundRoutes);
+
+
+app.use("/api/admin/returns",adminReturnRoutes);
+
 
 module.exports = app;

@@ -23,6 +23,10 @@ const {
 const authMiddleware =
 require("../middleware/authMiddleware");
 
+const adminMiddleware =
+require("../middleware/adminMiddleware");
+
+
 router.post(
   "/",
   authMiddleware,
@@ -44,6 +48,7 @@ router.get(
 router.patch(
   "/:id/status",
   authMiddleware,
+  adminMiddleware,
   validateOrderStatus,
   updateOrderStatus
 );

@@ -46,22 +46,30 @@ const createReturn = async (returnData) => {
   );
 };
 
-const getReturns = async () => {
+const getReturns = async (userId) => {
 
   const returnRepository =
     AppDataSource.getRepository("Return");
 
-  return await returnRepository.find();
+  return await returnRepository.find({
+    where: {
+      user_id: userId
+    }
+  });
 
 };
 
-const getReturnById = async (id) => {
+const getReturnById = async (
+  id,
+  userId
+) => {
 
   const returnRepository =
     AppDataSource.getRepository("Return");
 
   return await returnRepository.findOneBy({
-    id
+    id,
+    user_id: userId
   });
 
 };

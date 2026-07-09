@@ -31,7 +31,7 @@ router.get(
 router.put(
   "/:id",
   authMiddleware,
-  validateAddress,
+ 
   updateAddress
 );
 

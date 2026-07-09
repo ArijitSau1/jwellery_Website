@@ -121,23 +121,32 @@ const updateOrderStatus = async (
 
     const order =
       await orderService.updateOrderStatus(
-        req.user.id,
+
         req.params.id,
+
         req.body.status
+
       );
 
     res.status(200).json({
+
       success: true,
+
       message:
-        "Order status updated",
+        "Order status updated successfully",
+
       data: order
+
     });
 
   } catch (error) {
 
     res.status(500).json({
+
       success: false,
+
       message: error.message
+
     });
 
   }

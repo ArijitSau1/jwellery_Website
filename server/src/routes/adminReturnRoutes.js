@@ -7,58 +7,69 @@ express.Router();
 const authMiddleware =
 require("../middleware/authMiddleware");
 
-const{
+const adminMiddleware =
+require("../middleware/adminMiddleware");
 
-schedulePickup,
+const {
 
-pickupCompleted,
+  schedulePickup,
 
-refundProcessing,
+  pickupCompleted,
 
-refundCompleted
+  refundProcessing,
 
-}=require(
-"../controllers/adminReturnController"
+  refundCompleted
+
+} = require(
+  "../controllers/adminReturnController"
 );
 
 router.patch(
 
-"/:id/schedule-pickup",
+  "/:id/schedule-pickup",
 
-authMiddleware,
+  authMiddleware,
 
-schedulePickup
+  adminMiddleware,
 
-);
-
-router.patch(
-
-"/:id/pickup-completed",
-
-authMiddleware,
-
-pickupCompleted
+  schedulePickup
 
 );
 
 router.patch(
 
-"/:id/refund-processing",
+  "/:id/pickup-completed",
 
-authMiddleware,
+  authMiddleware,
 
-refundProcessing
+  adminMiddleware,
+
+  pickupCompleted
 
 );
 
 router.patch(
 
-"/:id/refund-completed",
+  "/:id/refund-processing",
 
-authMiddleware,
+  authMiddleware,
 
-refundCompleted
+  adminMiddleware,
+
+  refundProcessing
 
 );
 
-module.exports=router;
+router.patch(
+
+  "/:id/refund-completed",
+
+  authMiddleware,
+
+  adminMiddleware,
+
+  refundCompleted
+
+);
+
+module.exports = router;

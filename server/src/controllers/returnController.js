@@ -36,10 +36,13 @@ const createReturn = async (req, res) => {
 };
 
 const getReturns = async (req, res) => {
+
   try {
 
     const returns =
-      await returnService.getReturns();
+      await returnService.getReturns(
+        req.user.id
+      );
 
     res.status(200).json({
       success: true,
@@ -48,21 +51,23 @@ const getReturns = async (req, res) => {
 
   } catch (error) {
 
-  res.status(400).json({
-    success: false,
-    message: error.message
-  });
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
 
-}
+  }
+
 };
 
 const getReturnById = async (req, res) => {
   try {
 
-    const returnRequest =
-      await returnService.getReturnById(
-        parseInt(req.params.id)
-      );
+   const returnRequest =
+  await returnService.getReturnById(
+    parseInt(req.params.id),
+    req.user.id
+  );
 
     if (!returnRequest) {
       return res.status(404).json({

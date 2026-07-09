@@ -108,7 +108,6 @@ const getOrderById = async (
 
 
 const updateOrderStatus = async (
-  userId,
   orderId,
   status
 ) => {
@@ -120,8 +119,7 @@ const updateOrderStatus = async (
 
   const order =
     await orderRepository.findOneBy({
-      id: parseInt(orderId),
-      user_id: userId
+      id: parseInt(orderId)
     });
 
   if (!order) {
@@ -135,6 +133,7 @@ const updateOrderStatus = async (
   return await orderRepository.save(
     order
   );
+
 };
 
 

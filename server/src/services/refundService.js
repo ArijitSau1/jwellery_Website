@@ -12,79 +12,53 @@ const createRefund = async (
   const returnRepository =
     AppDataSource.getRepository("Return");
 
-  // Return exists
-
   const returnRequest =
     await returnRepository.findOneBy({
-
       id: refundData.return_id
-
     });
 
   if (!returnRequest) {
-
     throw new Error(
       "Return request not found"
     );
-
   }
-
-  
 
   if (
     returnRequest.user_id !== userId
   ) {
-
     throw new Error(
       "You are not allowed"
     );
-
   }
-
- 
 
   if (
     returnRequest.status !==
     "APPROVED"
   ) {
-
     throw new Error(
       "Return request is not approved"
     );
-
   }
-
-  
 
   if (
     !returnRequest.pickup_address_id
   ) {
-
     throw new Error(
       "Please select pickup address first"
     );
-
   }
-
-  //if Refund already exists then can't create resturn again
 
   const existingRefund =
     await refundRepository.findOneBy({
-
       return_id:
       refundData.return_id
-
     });
 
   if (existingRefund) {
-
     throw new Error(
       "Refund details already submitted"
     );
-
   }
-
-  // Validation
 
   if (
     refundData.refund_method ===
@@ -92,11 +66,9 @@ const createRefund = async (
   ) {
 
     if (!refundData.upi_id) {
-
       throw new Error(
         "UPI ID is required"
       );
-
     }
 
   }
@@ -107,15 +79,10 @@ const createRefund = async (
   ) {
 
     if (
-
       !refundData.bank_name ||
-
       !refundData.account_holder ||
-
       !refundData.account_number ||
-
       !refundData.ifsc_code
-
     ) {
 
       throw new Error(
@@ -138,18 +105,54 @@ const createRefund = async (
 };
 
 const getRefundByReturnId =
-async (returnId) => {
+async (
+  returnId,
+  userId
+) => {
 
   const refundRepository =
     AppDataSource.getRepository(
       "Refund"
     );
 
-  return await refundRepository.findOneBy({
+  const returnRepository =
+    AppDataSource.getRepository(
+      "Return"
+    );
 
-    return_id: returnId
+  const returnRequest =
+    await returnRepository.findOneBy({
 
-  });
+      id: returnId,
+
+      user_id: userId
+
+    });
+
+  if (!returnRequest) {
+
+    throw new Error(
+      "Return request not found"
+    );
+
+  }
+
+  const refund =
+    await refundRepository.findOneBy({
+
+      return_id: returnId
+
+    });
+
+  if (!refund) {
+
+    throw new Error(
+      "Refund details not found"
+    );
+
+  }
+
+  return refund;
 
 };
 

@@ -47,9 +47,9 @@ async (req, res) => {
     const refund =
       await refundService.getRefundByReturnId(
 
-        parseInt(
-          req.params.returnId
-        )
+        parseInt(req.params.returnId),
+
+        req.user.id
 
       );
 

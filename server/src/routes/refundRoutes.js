@@ -1,41 +1,28 @@
 const express =
 require("express");
 
-const {
-
-  createRefund,
-
-  getRefund
-
-} = require(
-"../controllers/refundController"
-);
+const router =
+express.Router();
 
 const authMiddleware =
 require("../middleware/authMiddleware");
 
-const router =
-express.Router();
+const {
+  createRefund,
+  getRefund
+} =
+require("../controllers/refundController");
 
 router.post(
-
   "/",
-
   authMiddleware,
-
   createRefund
-
 );
 
 router.get(
-
-  "/:returnId",
-
+  "/returns/:returnId",
   authMiddleware,
-
   getRefund
-
 );
 
-module.exports =
-router;
+module.exports = router;

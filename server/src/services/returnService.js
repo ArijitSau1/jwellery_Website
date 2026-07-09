@@ -332,9 +332,9 @@ const cancelReturn = async (
 
   const returnRequest =
     await returnRepository.findOneBy({
-      id: returnId
+      id: returnId,
+      user_id: userId
     });
-
 
   if (!returnRequest) {
     throw new Error(
@@ -342,14 +342,6 @@ const cancelReturn = async (
     );
   }
 
-
-  if (returnRequest.user_id !== userId) {
-    throw new Error(
-      "You are not allowed to cancel this return"
-    );
-  }
-
-  
   if (
     returnRequest.workflow_status ===
     "CANCELLED"
@@ -359,26 +351,18 @@ const cancelReturn = async (
     );
   }
 
-  
+  const allowedStatus = [
+    "REQUESTED",
+    "PICKUP_PENDING"
+  ];
+
   if (
-    returnRequest.workflow_status ===
-    "PICKUP_COMPLETED"
+    !allowedStatus.includes(
+      returnRequest.workflow_status
+    )
   ) {
     throw new Error(
-      "Pickup already completed. Return cannot be cancelled."
-    );
-  }
-
-  
-  if (
-    returnRequest.workflow_status ===
-      "REFUND_PROCESSING" ||
-
-    returnRequest.workflow_status ===
-      "REFUND_COMPLETED"
-  ) {
-    throw new Error(
-      "Refund has already started. Return cannot be cancelled."
+      "Return cannot be cancelled at this stage"
     );
   }
 

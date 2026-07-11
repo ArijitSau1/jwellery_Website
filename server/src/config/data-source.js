@@ -21,7 +21,8 @@ const AppDataSource = new DataSource({
              require("../entities/address"),
              require("../entities/Order"),
               require("../entities/Return"),
-             require("../entities/Refund")
+             require("../entities/Refund"),
+             require("../entities/Review")
   ],
 });
 

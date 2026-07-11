@@ -6,6 +6,8 @@ const addressRoutes = require("./routes/addressRoutes");
 const orderRoutes =  require("./routes/orderRoutes");
 const refundRoutes =  require("./routes/refundRoutes");
 const adminReturnRoutes =  require("./routes/adminReturnRoutes");
+const dashboardRoutes =  require("./routes/dashboardRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 
 const app = express();
@@ -27,6 +29,10 @@ app.use("/api/refunds",refundRoutes);
 
 
 app.use("/api/admin/returns",adminReturnRoutes);
+
+app.use("/api/admin/dashboard",dashboardRoutes);
+
+app.use( "/api/reviews", reviewRoutes);
 
 
 module.exports = app;

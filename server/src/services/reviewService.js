@@ -98,6 +98,33 @@ const createReview = async (
 
 };
 
+
+
+const getMyReviews = async (
+  userId
+) => {
+
+  const reviewRepository =
+    AppDataSource.getRepository(
+      "Review"
+    );
+
+  return await reviewRepository.find({
+
+    where: {
+      user_id: userId
+    },
+
+    order: {
+      created_at: "DESC"
+    }
+
+  });
+
+};
+
+
 module.exports = {
-  createReview
+  createReview,
+   getMyReviews
 };

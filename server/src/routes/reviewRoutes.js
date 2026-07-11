@@ -8,7 +8,8 @@ const authMiddleware =
 require("../middleware/authMiddleware");
 
 const {
-  createReview
+  createReview,
+  getMyReviews
 } = require(
 "../controllers/reviewController"
 );
@@ -17,6 +18,13 @@ router.post(
   "/",
   authMiddleware,
   createReview
+);
+
+
+router.get(
+  "/",
+  authMiddleware,
+  getMyReviews
 );
 
 module.exports = router;

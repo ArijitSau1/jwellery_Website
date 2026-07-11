@@ -40,6 +40,44 @@ async (req, res) => {
 
 };
 
+
+
+const getMyReviews =
+async (req, res) => {
+
+  try {
+
+    const reviews =
+      await reviewService.getMyReviews(
+
+        req.user.id
+
+      );
+
+    res.status(200).json({
+
+      success: true,
+
+      data: reviews
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
+
+};
+
+
 module.exports = {
-  createReview
+  createReview,
+  getMyReviews
 };
